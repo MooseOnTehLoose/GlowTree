@@ -1,6 +1,6 @@
 name: GlowTree
-main: moosecraft.GlowTree
-version: 1.0
+main: net.moosecraft.GlowTree
+version: 2.0
 commands:
    glowtree:
       description: grow a tree over dirt over glowstone to grow more glowstone
