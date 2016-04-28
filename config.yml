@@ -7,6 +7,7 @@ pumpkin: TRUE
 melon: TRUE
 mob: TRUE
 cake: TRUE
+lantern: TRUE
 
 #seed block for special tree types
 #value is of type Material 
