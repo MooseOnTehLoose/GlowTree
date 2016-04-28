@@ -53,6 +53,9 @@ public class GlowTask extends BukkitRunnable {
         else if(((GlowTree.treeType)enabledTreeList.get(seed)).equals(GlowTree.treeType.cake)){
             replace = Material.CAKE_BLOCK;
         }
+        else if(((GlowTree.treeType)enabledTreeList.get(seed)).equals(GlowTree.treeType.lantern)){
+            replace = Material.SEA_LANTERN;
+        }
         
         //find the start of the tree leaves
         Block tTop = GlowTree.getLeaf(tBottom.getBlock());

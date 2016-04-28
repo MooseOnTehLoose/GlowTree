@@ -17,7 +17,7 @@ public class GlowTree extends JavaPlugin implements Listener {
     private final GlowTree plugin = this;
     public enum treeType {
 
-        glow,boom,pumpkin,melon,mob,cake
+        glow,boom,pumpkin,melon,mob,cake,lantern
 
     }
     

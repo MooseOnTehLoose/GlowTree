@@ -17,3 +17,4 @@ pumpkinblock: PUMPKIN
 melonblock: MELON_BLOCK
 mobblock: MOB_SPAWNER
 cakeblock: CAKE_BLOCK
+lanternblock: SEA_LANTERN

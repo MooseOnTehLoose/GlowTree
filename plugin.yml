@@ -1,5 +1,5 @@
 name: GlowTree
-main: net.moosecraft.GlowTree
+main: net.moosecraft.GlowTree.GlowTree
 version: 2.0
 commands:
    glowtree:
