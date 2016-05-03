@@ -13,12 +13,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class GlowTask extends BukkitRunnable {
+public class AcaciaGlowTask extends BukkitRunnable {
 	private final StructureGrowEvent event;
 	private final Material seed;
 	HashMap<Material, GlowTree.treeType> enabledTreeList;
 	
-	public GlowTask(StructureGrowEvent e, Material s){
+	public AcaciaGlowTask(StructureGrowEvent e, Material s){
 		this.event = e;
 		this.seed = s;
 		enabledTreeList = GlowTree.enabledTreeList;
@@ -32,29 +32,25 @@ public class GlowTask extends BukkitRunnable {
         Material replace = GlowTree.seedList.get(GlowTree.enabledTreeList.get(seed));
         
         //find the start of the tree leaves
-        Block tTop = GlowTree.getLeaf(tBottom.getBlock());
-    	
-        //go up one more if there's extra room
-        if(tTop.getRelative(BlockFace.UP).getType().equals(Material.LOG)){
-    		
-    		tTop = tTop.getRelative(BlockFace.UP);
-        }
-
+        Block tTop = GlowTree.getAcaciaLeaf(tBottom.getBlock());
+    	if (tTop.getRelative(BlockFace.UP).getType().equals(Material.AIR)){
+    		tTop = tTop.getRelative(BlockFace.DOWN);
+    	}
         if(replace.equals(Material.MOB_SPAWNER)) {
-        	
-        	EntityType type = EntityType.ZOMBIE;
-        	
-        	ArrayList<Block> blockStates = new ArrayList<Block>(Arrays.asList(
-        			tTop.getRelative(BlockFace.NORTH),
-        			tTop.getRelative(BlockFace.SOUTH),
-        			tTop.getRelative(BlockFace.EAST),
-        			tTop.getRelative(BlockFace.WEST)));
-        	
-        	for ( Block block : blockStates){
-        		block.setType(replace);
-        		((CreatureSpawner)block.getState()).setSpawnedType(type);
-        		block.getState().update();
-        	}
+            	
+            	EntityType type = EntityType.ZOMBIE;
+            	
+            	ArrayList<Block> blockStates = new ArrayList<Block>(Arrays.asList(
+            			tTop.getRelative(BlockFace.NORTH),
+            			tTop.getRelative(BlockFace.SOUTH),
+            			tTop.getRelative(BlockFace.EAST),
+            			tTop.getRelative(BlockFace.WEST)));
+            	
+            	for ( Block block : blockStates){
+            		block.setType(replace);
+            		((CreatureSpawner)block.getState()).setSpawnedType(type);
+            		block.getState().update();
+            	}
 
         }//if block mobspawner
         
