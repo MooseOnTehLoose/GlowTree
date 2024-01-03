@@ -8,8 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -191,32 +189,7 @@ public class GlowTree extends JavaPlugin implements Listener {
     
     } 
     
-    public static void setBig(Block b, Material type){
-    	ArrayList<Block> trees = new ArrayList<Block>(
-        		Arrays.asList(b.getRelative(BlockFace.WEST),
-        					  b.getRelative(BlockFace.NORTH),
-        					  b.getRelative(BlockFace.NORTH_EAST),
-        					  b.getRelative(BlockFace.EAST).getRelative(BlockFace.EAST),
-        					  b.getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH_EAST),
-        					  b.getRelative(BlockFace.SOUTH).getRelative(BlockFace.SOUTH_EAST),
-        					  b.getRelative(BlockFace.SOUTH).getRelative(BlockFace.SOUTH),
-        					  b.getRelative(BlockFace.SOUTH_WEST)));
-    	
-    	if(type.equals(Material.MOB_SPAWNER)) {
-        	EntityType zed = EntityType.ZOMBIE;
-        	for (Block bX : trees){
-        		bX.setType(type);
-        		((CreatureSpawner)bX.getState()).setSpawnedType(zed);
-        		bX.getState().update();
-        	}
 
-        }//if block mobspawner
-    	else {
-    		for (Block bX : trees){
-    			bX.setType(type);
-    		}
-    	}
-    }
     
     @EventHandler
     public void onInteract(StructureGrowEvent event){

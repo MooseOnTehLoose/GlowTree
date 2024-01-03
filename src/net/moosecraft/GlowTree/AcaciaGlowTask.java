@@ -38,19 +38,23 @@ public class AcaciaGlowTask extends BukkitRunnable {
     	}
         if(replace.equals(Material.MOB_SPAWNER)) {
             	
-            	EntityType type = EntityType.ZOMBIE;
-            	
-            	ArrayList<Block> blockStates = new ArrayList<Block>(Arrays.asList(
-            			tTop.getRelative(BlockFace.NORTH),
-            			tTop.getRelative(BlockFace.SOUTH),
-            			tTop.getRelative(BlockFace.EAST),
-            			tTop.getRelative(BlockFace.WEST)));
-            	
-            	for ( Block block : blockStates){
-            		block.setType(replace);
-            		((CreatureSpawner)block.getState()).setSpawnedType(type);
-            		block.getState().update();
-            	}
+        	Block tSeed = tBottom.getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.DOWN);
+        	CreatureSpawner seedSpawner = (CreatureSpawner)tSeed.getState();
+    		EntityType mtype = seedSpawner.getSpawnedType();
+        	
+        	ArrayList<Block> blockStates = new ArrayList<Block>(Arrays.asList(
+        			tTop.getRelative(BlockFace.NORTH),
+        			tTop.getRelative(BlockFace.SOUTH),
+        			tTop.getRelative(BlockFace.EAST),
+        			tTop.getRelative(BlockFace.WEST)));
+        	
+        	for ( Block block : blockStates){
+        		block.setType(Material.MOB_SPAWNER);
+        		CreatureSpawner spawner = (CreatureSpawner)block.getState();
+        		spawner.setSpawnedType(mtype);
+        		spawner.update();
+        		
+        	}
 
         }//if block mobspawner
         

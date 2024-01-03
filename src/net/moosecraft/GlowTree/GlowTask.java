@@ -30,7 +30,6 @@ public class GlowTask extends BukkitRunnable {
 
         final Location tBottom = event.getLocation();
         Material replace = GlowTree.seedList.get(GlowTree.enabledTreeList.get(seed));
-        
         //find the start of the tree leaves
         Block tTop = GlowTree.getLeaf(tBottom.getBlock());
     	
@@ -42,7 +41,9 @@ public class GlowTask extends BukkitRunnable {
 
         if(replace.equals(Material.MOB_SPAWNER)) {
         	
-        	EntityType type = EntityType.ZOMBIE;
+        	Block tSeed = tBottom.getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.DOWN);
+        	CreatureSpawner seedSpawner = (CreatureSpawner)tSeed.getState();
+    		EntityType mtype = seedSpawner.getSpawnedType();
         	
         	ArrayList<Block> blockStates = new ArrayList<Block>(Arrays.asList(
         			tTop.getRelative(BlockFace.NORTH),
@@ -51,9 +52,11 @@ public class GlowTask extends BukkitRunnable {
         			tTop.getRelative(BlockFace.WEST)));
         	
         	for ( Block block : blockStates){
-        		block.setType(replace);
-        		((CreatureSpawner)block.getState()).setSpawnedType(type);
-        		block.getState().update();
+        		block.setType(Material.MOB_SPAWNER);
+        		CreatureSpawner spawner = (CreatureSpawner)block.getState();
+        		spawner.setSpawnedType(mtype);
+        		spawner.update();
+        		
         	}
 
         }//if block mobspawner
