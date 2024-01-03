@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,14 +23,13 @@ public class GlowTree extends JavaPlugin implements Listener {
     
     public static HashMap<treeType, Material> seedList = new HashMap<treeType, Material>() {
 		
-    	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 	{
 		put(treeType.glow, Material.GLOWSTONE);
     	put(treeType.boom, Material.TNT);
-    	put(treeType.cake, Material.CAKE_BLOCK);
+    	put(treeType.cake, Material.CAKE);
     	put(treeType.melon, Material.MELON);
-    	put(treeType.mob, Material.MOB_SPAWNER);
     	put(treeType.pumpkin, Material.PUMPKIN);
     	put(treeType.lantern, Material.SEA_LANTERN);
     	
@@ -60,12 +60,15 @@ public class GlowTree extends JavaPlugin implements Listener {
 
             if(getConfig().getBoolean(type.name())){
                 
-            	Material cost = Material.getMaterial(getConfig().getString(type.toString() + "block" ));
+            	String confcost = getConfig().getString(type.toString() + "block" );
+            	            	
+            	Material cost = Material.getMaterial(confcost);
             	
+                //notify server of tree types and costs for each type	
+                getLogger().info(type.toString() + " uses: " + cost.toString());
+
             	enabledTreeList.put(cost, type);
                 
-                //notify server of tree types and costs for each type
-                getLogger().info(type.toString() + " uses: " + cost.toString());
                 
             }
         }
@@ -80,62 +83,66 @@ public class GlowTree extends JavaPlugin implements Listener {
     
 	//Start at the bottom of the tree and recurse up until you find leaves around the tree center
     public static Block getLeaf(Block start){
+
+        BlockData n = start.getRelative(BlockFace.NORTH).getBlockData();
+        BlockData s = start.getRelative(BlockFace.SOUTH).getBlockData();
+        BlockData e = start.getRelative(BlockFace.EAST).getBlockData();
+        BlockData w = start.getRelative(BlockFace.WEST).getBlockData();
         
-    	Material a = Material.AIR;
-        Material l = Material.LEAVES;
-        Material n = start.getRelative(BlockFace.NORTH).getType();
-        Material s = start.getRelative(BlockFace.SOUTH).getType();
-        Material e = start.getRelative(BlockFace.EAST).getType();
-        Material w = start.getRelative(BlockFace.WEST).getType();
-        
-        if(n.equals(l) || s.equals(l) || e.equals(l) || w.equals(l) || start.getRelative(BlockFace.UP).getType().equals(a)) {
+        if(n instanceof org.bukkit.block.data.type.Leaves || 
+        		s instanceof org.bukkit.block.data.type.Leaves || 
+        		e instanceof org.bukkit.block.data.type.Leaves ||
+        		w instanceof org.bukkit.block.data.type.Leaves || 
+        		start.getRelative(BlockFace.UP).getType().isAir()) {
             return start;
         } 
+       
         else {
             return getLeaf(start.getRelative(BlockFace.UP));
-        }   
+        }
+        
     }
     
 	//Start at the bottom of the tree and recurse up until you find leaves around the tree center
     public static Block getAcaciaLeaf(Block start){
         
     	//if logs keep going up
-    	if (start.getRelative(BlockFace.UP).getType().equals(Material.LOG_2)){
+    	if (start.getRelative(BlockFace.UP).getType().equals(Material.ACACIA_LOG)){
         		return getAcaciaLeaf(start.getRelative(BlockFace.UP));
         }
         
     	//if you hit air look up and around for more logs
-    	else if (start.getRelative(BlockFace.UP).getType().equals(Material.AIR) || start.getRelative(BlockFace.UP).getType().equals(Material.LEAVES_2) ){
+    	else if (start.getRelative(BlockFace.UP).getType().equals(Material.AIR) || start.getRelative(BlockFace.UP).getBlockData() instanceof org.bukkit.block.data.type.Leaves){
         	
         	//go up 1 block	
         	Block up1 = start.getRelative(BlockFace.UP);
         		
         	//if up 1 and north is a log go up 	
-        	if (up1.getRelative(BlockFace.NORTH).getType().equals(Material.LOG_2)){		
+        	if (up1.getRelative(BlockFace.NORTH).getType().equals(Material.ACACIA_LOG)){		
         		return getAcaciaLeaf(up1.getRelative(BlockFace.NORTH));
         	}
         	
-        	else if (up1.getRelative(BlockFace.SOUTH).getType().equals(Material.LOG_2)){
+        	else if (up1.getRelative(BlockFace.SOUTH).getType().equals(Material.ACACIA_LOG)){
         		return getAcaciaLeaf(up1.getRelative(BlockFace.SOUTH));
         	}
         	
-        	else if (up1.getRelative(BlockFace.EAST).getType().equals(Material.LOG_2)){	
+        	else if (up1.getRelative(BlockFace.EAST).getType().equals(Material.ACACIA_LOG)){	
         		return getAcaciaLeaf(up1.getRelative(BlockFace.EAST));
         	}
         	
-        	else if (up1.getRelative(BlockFace.WEST).getType().equals(Material.LOG_2)){
+        	else if (up1.getRelative(BlockFace.WEST).getType().equals(Material.ACACIA_LOG)){
         			
         		return getAcaciaLeaf(up1.getRelative(BlockFace.WEST));
         	}
         	
-        	else if (up1.getType().equals(Material.LEAVES_2)){
+        	else if (up1.getBlockData() instanceof org.bukkit.block.data.type.Leaves){
  
         		return up1;
         	}
         	
         	return start;
         }	
-    	else if (start.getRelative(BlockFace.UP).getType().equals(Material.LEAVES_2)){
+    	else if (start.getRelative(BlockFace.UP).getBlockData() instanceof org.bukkit.block.data.type.Leaves){
     		return start.getRelative(BlockFace.UP);
     	}
     	return start;
@@ -189,7 +196,22 @@ public class GlowTree extends JavaPlugin implements Listener {
     
     } 
     
+    public static void setBig(Block b, Material type){
+    	ArrayList<Block> trees = new ArrayList<Block>(
+        		Arrays.asList(b.getRelative(BlockFace.WEST),
+        					  b.getRelative(BlockFace.NORTH),
+        					  b.getRelative(BlockFace.NORTH_EAST),
+        					  b.getRelative(BlockFace.EAST).getRelative(BlockFace.EAST),
+        					  b.getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH_EAST),
+        					  b.getRelative(BlockFace.SOUTH).getRelative(BlockFace.SOUTH_EAST),
+        					  b.getRelative(BlockFace.SOUTH).getRelative(BlockFace.SOUTH),
+        					  b.getRelative(BlockFace.SOUTH_WEST)));
+    	
+    	for (Block bX : trees){
+    		bX.setType(type);
 
+    	}
+    }
     
     @EventHandler
     public void onInteract(StructureGrowEvent event){
@@ -227,5 +249,3 @@ public class GlowTree extends JavaPlugin implements Listener {
        }//if big
     }// onInteract
 }//class GlowTree
-
-
