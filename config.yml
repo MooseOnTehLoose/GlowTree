@@ -5,7 +5,6 @@ glow: TRUE
 boom: TRUE
 pumpkin: TRUE
 melon: TRUE
-mob: TRUE
 cake: TRUE
 lantern: TRUE
 
@@ -15,7 +14,6 @@ lantern: TRUE
 glowblock: GLOWSTONE
 boomblock: TNT
 pumpkinblock: PUMPKIN
-melonblock: MELON_BLOCK
-mobblock: MOB_SPAWNER
-cakeblock: CAKE_BLOCK
+melonblock: MELON
+cakeblock: CAKE
 lanternblock: SEA_LANTERN
