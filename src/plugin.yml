@@ -1,7 +1,7 @@
 name: GlowTree
 author: MooseOnTehLoose
 main: net.moosecraft.GlowTree.GlowTree
-version: 2.1-1.20.2
+version: 2.2-1.20.4
 api-version: 1.20
 commands:
    glowtree:
