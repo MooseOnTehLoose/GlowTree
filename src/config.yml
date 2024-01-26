@@ -1,0 +1,19 @@
+#Special tree types
+#value is TRUE or FALSE
+
+glow: TRUE
+boom: TRUE
+pumpkin: TRUE
+melon: TRUE
+cake: TRUE
+lantern: TRUE
+
+#seed block for special tree types
+#value is of type Material 
+
+glowblock: GLOWSTONE
+boomblock: TNT
+pumpkinblock: PUMPKIN
+melonblock: MELON
+cakeblock: CAKE
+lanternblock: SEA_LANTERN
